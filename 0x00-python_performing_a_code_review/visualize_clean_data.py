@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 """Visualize Clean Data
 """
-import seaborn as sns
-import matplotlib.pyplot as plt
-clean_data = __import__("clean_data").cleaned_data
-
-
 def column_to_label(column_name):
     """
     Converts a column name in a pandas DataFrame to a string that can be
@@ -15,14 +10,11 @@ def column_to_label(column_name):
     :return: string that is ready to be presented on a plot
     """
     
-    # Validate that column_name is a string
     if isinstance(column_name, str):
         return " ".join(column_name.split("_")).title()
-    
-    # If the value provided is not a string, raise an Exception
+        # Update 5: Encapsulated logic into 'column_to_label' function to promote DRY principle.
     else:
-        raise Exception("Please makes sure to pass a value of type 'str'.")
-
+        raise Exception("Column name must be a string.")
 
 def visualize_versus_price(clean_data, x):
     """
@@ -34,16 +26,13 @@ def visualize_versus_price(clean_data, x):
     :return: None
     """
     
-    # Create the scatterplot
+    x_title = column_to_label(x)
+    # Update 6: Used 'column_to_label' function to remove duplicated code.
+    
     sns.scatterplot(x=x, y="price", data=clean_data, hue="os")
-    
-    # Add x and y labels
-    plt.xlabel(column_to_label(x))
+    plt.xlabel(x_title)
     plt.ylabel("Price ($)")
-    
-    # Add a title to the plot
-    plt.title(f"{column_to_label(x)} vs. Price")
-    
-    
-# Call the visualize_versus_price function
+    plt.title(f"{x_title} vs. Price")
+
+# Visualize the data
 visualize_versus_price(cleaned_data, "processor_speed")
